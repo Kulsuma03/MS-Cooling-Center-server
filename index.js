@@ -44,6 +44,7 @@ async function run(){
         const categoriesCollection = client.db('msCooling').collection('categories');
         const productsCollection = client.db('msCooling').collection('products');
         const usersCollection = client.db('msCooling').collection('users');
+        const bookingCollections = client.db('msCooling').collection('bookings');
 
         app.get('/categories', async (req, res) => {
             const query = {};
@@ -58,6 +59,8 @@ async function run(){
             // console.log(user);
             res.send(products)
         });
+
+        // get all products 
         app.get('/allproduct', async (req, res) => {
            
             const query = {};
@@ -66,7 +69,7 @@ async function run(){
             res.send(products)
         });
 
-         jwt 
+        //  jwt 
          app.get('/jwt', async (req, res) => {
             const email = req.query.email;
             const query = { email: email };
@@ -79,11 +82,20 @@ async function run(){
             res.status(403).send({ accessToken: '' })
         });
 
+        // insert user 
         app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
             res.send(result)
         });
+
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body;
+            const result = await bookingCollections.insertOne(booking);
+            res.send(result)
+        });
+
+
 
     }
     finally{
