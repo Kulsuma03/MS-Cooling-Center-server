@@ -45,6 +45,7 @@ async function run(){
         const productsCollection = client.db('msCooling').collection('products');
         const usersCollection = client.db('msCooling').collection('users');
         const bookingCollections = client.db('msCooling').collection('bookings');
+        const wishlistCollections = client.db('msCooling').collection('wishlist');
 
         app.get('/categories', async (req, res) => {
             const query = {};
@@ -98,6 +99,21 @@ async function run(){
             res.send(result)
         });
 
+        app.post('/wishlist', async (req, res) => {
+            const wishlist = req.body;
+            console.log(wishlist);
+            const result = await wishlistCollections.insertOne(wishlist);
+            res.send(result)
+        });
+
+        app.get('/myorders', async (req, res) => {
+           
+            const query = {};
+            const orders = await bookingCollections.find(query).toArray()
+            // console.log(user);
+            res.send(orders)
+        });
+
 
 
         // app.delete('/reviewd/:id', verifyJWT, async (req, res) => {
@@ -106,7 +122,7 @@ async function run(){
         //     const result = await reviewCollection.deleteOne(query);
         //     res.send(result);
         // })
-        
+
     }
     finally{
 
