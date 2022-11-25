@@ -61,6 +61,7 @@ async function run(){
         });
 
         // get all products 
+
         app.get('/allproduct', async (req, res) => {
            
             const query = {};
@@ -69,7 +70,9 @@ async function run(){
             res.send(products)
         });
 
+
         //  jwt 
+
          app.get('/jwt', async (req, res) => {
             const email = req.query.email;
             const query = { email: email };
@@ -97,6 +100,13 @@ async function run(){
 
 
 
+        // app.delete('/reviewd/:id', verifyJWT, async (req, res) => {
+        //     const id = req.params.id;
+        //     const query = { _id: ObjectId(id) };
+        //     const result = await reviewCollection.deleteOne(query);
+        //     res.send(result);
+        // })
+        
     }
     finally{
 
