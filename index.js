@@ -43,6 +43,7 @@ async function run(){
     try{
         const categoriesCollection = client.db('msCooling').collection('categories');
         const productsCollection = client.db('msCooling').collection('products');
+        const usersCollection = client.db('msCooling').collection('users');
 
         app.get('/categories', async (req, res) => {
             const query = {};
@@ -65,18 +66,24 @@ async function run(){
             res.send(products)
         });
 
-         // jwt 
-        //  app.get('/jwt', async (req, res) => {
-        //     const email = req.query.email;
-        //     const query = { email: email };
-        //     const user = await usersCollection.findOne(query);
-        //     // console.log(user);
-        //     if (user) {
-        //         const token = jwt.sign({ email }, process.env.ACCESS_TOKEN, { expiresIn: '1h' });
-        //         return res.send({ accessToken: token });
-        //     }
-        //     res.status(403).send({ accessToken: '' })
-        // })
+         jwt 
+         app.get('/jwt', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const user = await usersCollection.findOne(query);
+            // console.log(user);
+            if (user) {
+                const token = jwt.sign({ email }, process.env.ACCESS_TOKEN, { expiresIn: '1h' });
+                return res.send({ accessToken: token });
+            }
+            res.status(403).send({ accessToken: '' })
+        });
+
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            res.send(result)
+        });
 
     }
     finally{
