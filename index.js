@@ -93,11 +93,15 @@ async function run(){
             res.send(result)
         });
 
+        // post booking 
+
         app.post('/bookings', async (req, res) => {
             const booking = req.body;
             const result = await bookingCollections.insertOne(booking);
             res.send(result)
         });
+
+        // post wishList 
 
         app.post('/wishlist', async (req, res) => {
             const wishlist = req.body;
@@ -106,12 +110,21 @@ async function run(){
             res.send(result)
         });
 
+        // get my order api 
         app.get('/myorders', async (req, res) => {
            
             const query = {};
             const orders = await bookingCollections.find(query).toArray()
             // console.log(user);
             res.send(orders)
+        });
+
+        // get wishlist data 
+
+        app.get('/wishlist', async (req, res) => {
+            const query = {};
+            const wishData = await wishlistCollections.find(query).toArray()
+            res.send(wishData)
         });
 
 
