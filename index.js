@@ -93,6 +93,16 @@ async function run(){
             res.send(result)
         });
 
+        // get seller api 
+
+        app.get('/dashboard/allseller', async (req, res) => {
+            const query = {};
+            const seller = await usersCollection.find(query).toArray();
+            console.log(seller);
+            const filterSeller = seller.filter(w => w.role === 'seller');
+            res.send(filterSeller)
+        });
+
         // post booking 
 
         app.post('/bookings', async (req, res) => {
