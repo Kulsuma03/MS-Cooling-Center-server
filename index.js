@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken')
 
 require('dotenv').config()
@@ -123,10 +123,27 @@ async function run(){
 
         app.get('/wishlist', async (req, res) => {
             const query = {};
-            const wishData = await wishlistCollections.find(query).toArray()
-            res.send(wishData)
+            const wishData = await wishlistCollections.find(query).toArray();
+            const filterWish = wishData.filter(w => !w.purchase);
+            console.log(filterWish);
+            res.send(filterWish)
         });
 
+        // update wishList 
+
+        app.put('/wishlist/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+
+            const options = { upsert: true };
+            const updatedWish = {
+                $set: {
+                    purchase: true
+                }
+            }
+            const result = await wishlistCollections.updateOne(filter, updatedWish , options);
+            res.send(result)
+        });
 
 
         // app.delete('/reviewd/:id', verifyJWT, async (req, res) => {
